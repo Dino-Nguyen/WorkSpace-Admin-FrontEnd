@@ -1,0 +1,72 @@
+@import '../../setting';
+
+.home {
+  position: relative;
+
+  .statistics {
+    padding: 40px 30px 25px;
+    font-family: 'Roboto';
+  }
+
+  .list--container {
+    padding: 0 30px;
+    font-family: 'Roboto';
+    padding-bottom: 50px;
+  }
+}
+
+.show-side-bar {
+  left: calc(250px + 20px);
+  width: calc(100vw - 250px - 37px);
+}
+
+.list {
+  background: #ffffff;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+
+  &--header {
+    padding: 10px 60px 10px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & h2 {
+      color: #344767;
+      text-transform: uppercase;
+    }
+
+    .btn-group {
+      & button {
+        margin: 0 5px;
+        padding: 8px 12px;
+        background: #e5e5e5;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
+
+        & svg {
+          fill: $secondary-color;
+          transform: scale(1.25);
+        }
+
+        &:hover {
+          background: $primary-color;
+
+          & svg {
+            fill: #ffffff;
+          }
+        }
+      }
+    }
+  }
+}
+
+.active {
+  background: $primary-color !important;
+
+  & svg {
+    fill: #ffffff !important;
+  }
+}
