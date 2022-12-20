@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { signOut } from '../store/actions/auth';
 
-const baseURL = 'http://127.0.0.1:8080/api';
+const baseURL = process.env.REACT_APP_API;
 axios.defaults.baseURL = baseURL;
 
 const setBearerToken = (bearerToken) => {

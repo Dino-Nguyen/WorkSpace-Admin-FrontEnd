@@ -2,6 +2,51 @@
 
 .workspace-list {
   color: #344767;
+  min-height: 500px;
+
+  &--pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 43%;
+    bottom: 75px;
+
+    & button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      margin: 0 5px;
+      background: #e5e5e5;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
+      font-family: 'Roboto';
+      font-size: 1rem;
+      color: $secondary-color;
+
+      & svg {
+        fill: $secondary-color;
+      }
+
+      &:hover {
+        background: $primary-color;
+        color: #ffffff;
+
+        & svg {
+          fill: #ffffff;
+        }
+      }
+    }
+
+    .active-page {
+      background: $primary-color;
+      color: #ffffff;
+    }
+  }
 }
 
 .table {
@@ -16,6 +61,11 @@
     font-size: 1rem;
     font-weight: 500;
     text-transform: uppercase;
+    cursor: pointer;
+
+    & span {
+      vertical-align: middle;
+    }
   }
 
   & td {
@@ -71,4 +121,11 @@
   margin: 0 5px;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
   border-radius: 50%;
+}
+
+.no-record {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
 }

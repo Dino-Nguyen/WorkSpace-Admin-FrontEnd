@@ -7,22 +7,63 @@ import { Avatar } from '@mui/material';
 import ConfirmModal from '../ConfirmModal/ConfirmModal';
 import BoardDetail from '../BoardDetail/BoardDetail';
 import HTMLReactParser from 'html-react-parser';
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-export default function WorkspaceList({ workspacesListVisibility }) {
+export default function WorkspaceList({
+  workspacesListVisibility,
+  workspaceTitle,
+}) {
   const [workspaces, setWorkspaces] = useState([]);
   const [modalVisibility, setModalVisibility] = useState(false);
   const [deleteBoardId, setDeleteBoardId] = useState(null);
   const [deleteBoardTitle, setDeleteBoardTitle] = useState(null);
   const [boardDetailVisibility, setBoardDetailVisibility] = useState(false);
   const [boardDetail, setBoardDetail] = useState({});
+  const [page, setPage] = useState(1);
+  const [lastPage, setLastPage] = useState(0);
+  const [totalPages, setTotalPages] = useState([]);
+  const [sortField, setSortField] = useState('title');
+  const [ascendingOrder, setAscendingOrder] = useState(true);
 
   useEffect(() => {
-    api.fetchWorkspaces().then((data) => {
-      const { message, workspaces } = data;
-      console.log(message);
+    api.fetchWorkspaces(page, sortField, ascendingOrder).then((data) => {
+      const { workspaces, totalPages } = data;
       setWorkspaces(workspaces);
+      setLastPage(totalPages);
+      setTotalPages(() => {
+        const pagesArray = [...Array(totalPages).keys()].map((p) => p + 1);
+        return pagesArray.filter((p) => p < page + 2 && p >= page - 1);
+      });
     });
-  }, []);
+  }, [page, sortField, ascendingOrder]);
+
+  useEffect(() => {
+    let timer = setTimeout(async () => {
+      if (workspaceTitle.length > 0) {
+        const payload = { workspaceTitle };
+        await api.searchBoard(payload).then((data) => {
+          setWorkspaces(data.searchedBoards);
+        });
+      } else {
+        api.fetchWorkspaces(1, 'title', true).then((data) => {
+          const { workspaces, totalPages } = data;
+          setWorkspaces(workspaces);
+          setLastPage(totalPages);
+          setTotalPages(() => {
+            const pagesArray = [...Array(totalPages).keys()].map((p) => p + 1);
+            return pagesArray.filter((p) => p < 3 && p >= 1);
+          });
+        });
+      }
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [workspaceTitle]);
 
   const showModalHandler = (id, workspaceTitle) => {
     setModalVisibility(true);
@@ -71,11 +112,91 @@ export default function WorkspaceList({ workspacesListVisibility }) {
         <table className={classes['table']}>
           <thead>
             <tr>
-              <th>Workspace</th>
-              <th>Owner</th>
-              <th>Members</th>
-              <th>Status</th>
-              <th>Created at</th>
+              <th
+                onClick={() => {
+                  setSortField('title');
+                  setAscendingOrder(!ascendingOrder);
+                }}>
+                Workspace
+                {ascendingOrder && sortField === 'title' && (
+                  <span>
+                    <ArrowDropUpIcon />
+                  </span>
+                )}
+                {!ascendingOrder && sortField === 'title' && (
+                  <span>
+                    <ArrowDropDownIcon />
+                  </span>
+                )}
+              </th>
+              <th
+                onClick={() => {
+                  setSortField('ownerUsername');
+                  setAscendingOrder(!ascendingOrder);
+                }}>
+                Owner
+                {ascendingOrder && sortField === 'ownerUsername' && (
+                  <span>
+                    <ArrowDropUpIcon />
+                  </span>
+                )}
+                {!ascendingOrder && sortField === 'ownerUsername' && (
+                  <span>
+                    <ArrowDropDownIcon />
+                  </span>
+                )}
+              </th>
+              <th
+                onClick={() => {
+                  setSortField('members');
+                  setAscendingOrder(!ascendingOrder);
+                }}>
+                Members
+                {ascendingOrder && sortField === 'members' && (
+                  <span>
+                    <ArrowDropUpIcon />
+                  </span>
+                )}
+                {!ascendingOrder && sortField === 'members' && (
+                  <span>
+                    <ArrowDropDownIcon />
+                  </span>
+                )}
+              </th>
+              <th
+                onClick={() => {
+                  setSortField('_destroy');
+                  setAscendingOrder(!ascendingOrder);
+                }}>
+                Status
+                {ascendingOrder && sortField === '_destroy' && (
+                  <span>
+                    <ArrowDropUpIcon />
+                  </span>
+                )}
+                {!ascendingOrder && sortField === '_destroy' && (
+                  <span>
+                    <ArrowDropDownIcon />
+                  </span>
+                )}
+              </th>
+              <th
+                onClick={() => {
+                  setSortField('createdAt');
+                  setAscendingOrder(!ascendingOrder);
+                }}>
+                Created at
+                {ascendingOrder && sortField === 'createdAt' && (
+                  <span>
+                    <ArrowDropUpIcon />
+                  </span>
+                )}
+                {!ascendingOrder && sortField === 'createdAt' && (
+                  <span>
+                    <ArrowDropDownIcon />
+                  </span>
+                )}
+              </th>
               <th></th>
             </tr>
           </thead>
@@ -147,6 +268,27 @@ export default function WorkspaceList({ workspacesListVisibility }) {
               ))}
           </tbody>
         </table>
+        {workspaces && workspaces.length === 0 && (
+          <h2 className={classes['no-record']}>No document found.</h2>
+        )}
+        <div className={classes['workspace-list--pagination']}>
+          <button type="button" onClick={() => setPage(1)}>
+            <KeyboardDoubleArrowLeftIcon />
+          </button>
+          {totalPages.map((p, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                setPage(p);
+              }}
+              className={p === page ? classes['active-page'] : ''}>
+              {p}
+            </button>
+          ))}
+          <button type="button" onClick={() => setPage(lastPage)}>
+            <KeyboardDoubleArrowRightIcon />
+          </button>
+        </div>
       </div>
       {modalVisibility && (
         <ConfirmModal

@@ -8,6 +8,7 @@
   display: flex;
   overflow: hidden;
   font-family: 'Roboto';
+  text-align: center;
 }
 
 .background-container {
@@ -17,8 +18,8 @@
   border-radius: 16px;
 
   .background {
-    background: url('../../assets/sign-up-background.jpg') top 40% center/cover
-      no-repeat;
+    background: url('../../../public/images/sign-up-background.jpg') top 40%
+      center/cover no-repeat;
     border-radius: 16px;
     margin: 1.5%;
     width: 100%;
@@ -34,7 +35,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
 
   .form {
     width: 50%;
@@ -70,8 +70,14 @@
       width: 100%;
       margin-bottom: 15px;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
+      position: relative;
+
+      &:last-of-type {
+        flex-direction: row;
+      }
 
       & input {
         border: 1px solid #c7ccd0;
@@ -83,7 +89,7 @@
 
         &:focus {
           outline: none;
-          background: $input-focus-color;
+          background: blanchedalmond;
         }
       }
 
@@ -127,6 +133,36 @@
       cursor: pointer;
     }
   }
+}
+
+.offscreen {
+  display: none;
+}
+
+.instruction {
+  display: block;
+  text-align: justify;
+  width: 95%;
+  font-size: 1rem;
+  color: #e93b77;
+
+  & svg {
+    transform: scale(1.25);
+    margin-right: 5px;
+  }
+}
+
+.valid,
+.invalid {
+  position: absolute;
+  top: 8px;
+  right: 25px;
+  font-size: 1.25rem;
+  color: #e93b77;
+}
+
+.error-message {
+  display: block;
 }
 
 @include media-xl {

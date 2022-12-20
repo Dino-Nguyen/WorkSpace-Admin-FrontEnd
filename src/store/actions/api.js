@@ -21,9 +21,11 @@ const fetchAnalytic = async () => {
   }
 };
 
-const fetchWorkspaces = async () => {
+const fetchWorkspaces = async (page, sortField, ascendingOrder) => {
   try {
-    const res = await axios.get('/admin/workspaces');
+    const res = await axios.get(
+      `/admin/board?page=${page}&sort=${sortField}&ascendingOrder=${ascendingOrder}`,
+    );
     const { data } = res;
     return data;
   } catch (error) {
@@ -31,9 +33,11 @@ const fetchWorkspaces = async () => {
   }
 };
 
-const fetchUsers = async () => {
+const fetchUsers = async (page, sortField, ascendingOrder) => {
   try {
-    const res = await axios.get('/admin/users');
+    const res = await axios.get(
+      `/admin/user?page=${page}&sort=${sortField}&ascendingOrder=${ascendingOrder}`,
+    );
     const { data } = res;
     return data;
   } catch (error) {
@@ -71,6 +75,26 @@ const updateUser = async (userId, payload) => {
   }
 };
 
+const searchBoard = async (payload) => {
+  try {
+    const res = await axios.post('admin/board/search', payload);
+    const { data } = res;
+    return data;
+  } catch (error) {
+    toast.error(error.response.data.message, { theme: 'colored' });
+  }
+};
+
+const searchUser = async (payload) => {
+  try {
+    const res = await axios.post('admin/user/search', payload);
+    const { data } = res;
+    return data;
+  } catch (error) {
+    toast.error(error.response.data.message, { theme: 'colored' });
+  }
+};
+
 const api = {
   fetchStatistic,
   fetchAnalytic,
@@ -79,6 +103,8 @@ const api = {
   updateBoard,
   deleteBoard,
   updateUser,
+  searchBoard,
+  searchUser,
 };
 
 export default api;
