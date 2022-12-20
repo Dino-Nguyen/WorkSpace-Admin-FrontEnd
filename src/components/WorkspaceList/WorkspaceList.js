@@ -212,7 +212,7 @@ export default function WorkspaceList({
                           ? {
                               background: `url(${workspace.background}) center/cover no-repeat`,
                             }
-                          : '#ffffff'
+                          : { background: '#ffffff' }
                       }></div>
                     <span>{workspace.title}</span>
                   </td>

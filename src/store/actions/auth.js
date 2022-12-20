@@ -21,7 +21,7 @@ export const signIn = (payload, navigate, toast) => {
       localStorage.setItem('user', JSON.stringify(user));
       dispatch(authActions.signIn(JSON.stringify(user)));
       toast.success(message, { theme: 'colored' });
-      if (message) navigate('/dashboard');
+      if (message) navigate('/home');
     } catch (error) {
       console.log(error);
     }
