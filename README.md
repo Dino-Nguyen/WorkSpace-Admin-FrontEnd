@@ -1,3 +1,12 @@
+BE: https://github.com/1808T/workspace-be
+web : https://my-workspace-admin-4fa91.web.app/home
+ID admin@gmail.com Password: 123456
+
+---------------------------------------------------------
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
